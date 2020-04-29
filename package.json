@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "d3-geo": "^1.11.9",
+    "country-json": "^1.1.0",
+    "d3-scale": "^3.2.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-motion": "0.5.2",

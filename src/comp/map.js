@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";
 import {ComposableMap,ZoomableGlobe,Geographies,Geography} from "react-simple-maps";
 import { Motion, spring } from "react-motion";
-import Data from "../data/110m.json";
+import Data from "../data/50m.json";
 import ReactTooltip from "react-tooltip";
 import { scaleLinear } from "d3-scale";
 // import cBp from "../data/country-by-population.json";
@@ -11,9 +11,10 @@ const mapStyles = { width: "50%",height: "auto"};
 
 const colorScale = scaleLinear()
   // .domain([0,1000]);
-  .domain([0,1200])
-  .range(["#95ffff","#6bfaff", "#55c8cc", "#409699","#204b4c"]);
-  // .range(["#ffedea", "#ff5233"]);
+  .domain([0,35])
+  .range(["#ebfeff","#d1fdff","#b8fcff","#9efbff","#85faff","#6bf9ff","#52f8ff"]);
+  //.range(["#ebfeff","#d1fdff","#b8fcff","#9efbff","#85faff","#6bf9ff","#52f8ff"]);
+
 
 const Map =()=>{
   ///////API CALL
@@ -44,7 +45,6 @@ const Map =()=>{
 
   },[]);
 
-  // let cBps =cBp.find(r => r.country === results.properties.NAME_LONG);
 
 const [turn,setTurn]=useState(1);
 const [center,setCenter]=useState([0, 0]);
@@ -56,7 +56,7 @@ const LifecycleDemo=()=>{
 useEffect(() => {
 let interval = setTimeout(() => {
 setCenter([center[0]+turn,center[1]]);
-}, 10);
+}, 1);
 return () => clearTimeout(interval);
   },[]);
 return "mounted";
@@ -80,7 +80,7 @@ const  changeCenter = center => () => ( setCenter( center ));
 const circleProps={
   cx:"250",
   cy:"250",
-  r:"175",
+  r:"250",
   fill:"transparent",
   stroke:"#A0B2A6",
   strokeWidth: 0.1,
@@ -109,14 +109,17 @@ const circleProps={
           }}
         >
           {({ x, y }) => (  
-          <ComposableMap  width={500} height={500} projection="orthographic" projectionConfig={{ scale: 175 }} style={mapStyles}>        
+          <ComposableMap  width={500} height={500} projection="orthographic" projectionConfig={{ scale: 250 }} style={mapStyles}>        
             <ZoomableGlobe  center={[x, y]} >
             <circle style={circleProps}/>
             {results.length>0 &&( 
                 <Geographies disableOptimization geography={Data}>
                 {(geographies,proj) =>(       
-                  geographies.map((geography,i) => {    
+                  geographies.map((geography,i) => {  
+
                      let d = results.find(s => s.CountryCode === geography.properties.ISO_A2);
+                    //  console.log(results);
+                     
                           return(
                       <Geography
                         key={i}
@@ -124,27 +127,26 @@ const circleProps={
                         projection={proj}
                         fill={d ? colorScale( (d["TotalConfirmed"]/geography.properties.population)*(1000000))  : "#F5F4F6"}
                         onMouseOver={() => {
-                           setContent(geography.properties.NAME);
+                           setContent(geography.properties.name);
                         }}
                         onMouseOut={() => {
                           setContent("");
                         }}
                         onClick={()=>{
-                          console.log(geography.properties.NAME);
+                          console.log(geography.properties.name);
                         }}
                         style={
                           {
                             ///default fill
                           default: {
-                           
                             stroke: "#33329e",
                             strokeWidth: 0.10,
                             outline: "none",
                           },
                           hover: {
-                            fill: "#61988E",
-                            stroke: "#EABDA8",
-                            strokeWidth: 0.10,
+                            fill: "#fbff9e",
+                            stroke: "#ffd39e",
+                            strokeWidth: 0.4,
                             outline: "none",
                           },
                           pressed: {

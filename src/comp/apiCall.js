@@ -29,28 +29,28 @@ import { useState } from 'react'
 // }
 
 
-export async function fetchData() {
-    const [hasError, setErrors] = useState(false);
-  const [results, setResults] = useState(" ");
-  try {
-      const requestOptions = {
-          method: 'GET',
-          redirect: 'follow'
-        };    
-      const response = await fetch("https://api.covid19api.com/summary", requestOptions);
-      const json = await response.json();
-      const countries =json.Countries;
-      // console.log(countries);
+// export async function fetchData() {
+//     const [hasError, setErrors] = useState(false);
+//   const [results, setResults] = useState(" ");
+//   try {
+//       const requestOptions = {
+//           method: 'GET',
+//           redirect: 'follow'
+//         };    
+//       const response = await fetch("https://api.covid19api.com/summary", requestOptions);
+//       const json = await response.json();
+//       const countries =json.Countries;
+//       // console.log(countries);
 
-      setResults(countries);
-    } catch (error) {
-      setErrors(error);
-    }
-    console.log("Has error:", JSON.stringify(hasError));    
-           console.log(results);
+//       setResults(countries);
+//     } catch (error) {
+//       setErrors(error);
+//     }
+//     console.log("Has error:", JSON.stringify(hasError));    
+//            console.log(results);
 
    
-  }
+//   }
 
 
 

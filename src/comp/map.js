@@ -23,7 +23,6 @@ const Map =()=>{
 
   useEffect(() => {
     async function fetchData() {
-
     try {
       const requestOptions = {
           method: 'GET',
@@ -33,17 +32,14 @@ const Map =()=>{
       const json = await response.json();
       const countries =json.Countries;
       setResults(countries);
-      if(countries){
-         }
- 
+  
     } catch (error) {
-      setErrors(error);
+      setErrors(true);
     }
-    console.log("Has error:", JSON.stringify(hasError));  
+    // console.log(hasError);  
   }
   fetchData();
-
-  },[]);
+  });
 
 
 const [turn,setTurn]=useState(1);
@@ -52,15 +48,16 @@ const [mounted, setMounted] = useState(true);
 const [content, setContent] = useState("");
 
 const LifecycleDemo=()=>{
-
 useEffect(() => {
-let interval = setTimeout(() => {
+let interval = setInterval(() => {
 setCenter([center[0]+turn,center[1]]);
 }, 1);
-return () => clearTimeout(interval);
-  },[]);
+return () => clearInterval(interval);
+  });
 return "mounted";
 }
+
+
 
 const oneForTwo =()=>{
   toggle()
@@ -83,7 +80,7 @@ const circleProps={
   r:"250",
   fill:"transparent",
   stroke:"#A0B2A6",
-  strokeWidth: 0.1,
+  strokeWidth: 0.5,
 };
 
 
@@ -109,7 +106,7 @@ const circleProps={
           }}
         >
           {({ x, y }) => (  
-          <ComposableMap  width={500} height={500} projection="orthographic" projectionConfig={{ scale: 250 }} style={mapStyles}>        
+          <ComposableMap  width={500} height={500} projection="orthographic" projectionConfig={{ scale: 175 }} style={mapStyles} >        
             <ZoomableGlobe  center={[x, y]} >
             <circle style={circleProps}/>
             {results.length>0 &&( 
@@ -119,21 +116,20 @@ const circleProps={
 
                      let d = results.find(s => s.CountryCode === geography.properties.ISO_A2);
                     //  console.log(results);
-                     
                           return(
                       <Geography
                         key={i}
                         geography={geography}
                         projection={proj}
-                        fill={d ? colorScale( (d["TotalConfirmed"]/geography.properties.population)*(1000000))  : "#F5F4F6"}
+                        fill={d ? colorScale( d["TotalConfirmed"])  : "#F5F4F6"}
                         onMouseOver={() => {
-                           setContent(geography.properties.name);
+                           setContent(geography.properties.NAME);
                         }}
                         onMouseOut={() => {
                           setContent("");
                         }}
                         onClick={()=>{
-                          console.log(geography.properties.name);
+                          console.log(geography.properties.NAME);
                         }}
                         style={
                           {
